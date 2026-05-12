@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: glil8uwh6tnm_app
+    build: .
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - ./data:/app/data
+  db:
+    image: postgres:16-alpine
+    container_name: glil8uwh6tnm_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - glil8uwh6tnm_db_data:/var/lib/postgresql/data
+networks:
+  default:
+    name: glil8uwh6tnm_net
+volumes:
+  glil8uwh6tnm_db_data:
